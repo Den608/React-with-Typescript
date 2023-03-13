@@ -1,10 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/solid'
 import Logo from '@/assets/Logo.png'
-type Props = {}
+import Link from './Link'
+import { SelectedPage } from '@/shared/types'
+import ActionButton from '@/shared/ActionButton'
+type Props = {
+  selectedPage:SelectedPage,
+  setSelectedPage:(value:SelectedPage) => void;
+}
 
-const Navbar = (props: Props) => {
+const Navbar = ({selectedPage, setSelectedPage}: Props) => {
   const flexBetween = 'flex  justify-between items-center'
+  const isAboveMediumScreen = ("min-width:1060px");
+  const [isMenuToggle,setIsMenuToggle]=useState<boolean>(false)
   return (
     <nav>
       <div className={`${flexBetween} z-30 py-6 fixed top-0 px-2`}>
@@ -14,33 +22,43 @@ const Navbar = (props: Props) => {
             <img src={Logo} alt="logo" className="" />
           </div>
           {/* Right side */}
+          {isAboveMediumScreen ? (
           <div className={`${flexBetween}  w-full gap-8`}>
-           {/* Inner most left side */}
-            <div className={`${flexBetween} gap-6 w-5/6`}>
-              {/* ul li home,  benefits, Our classes ,contact us */}
-              <ul className="flex  items-center mx-auto w-full justify-center gap-x-10">
-                <li className="text-gray-500 hover:text-gray-900">Home</li>
-                <li className="text-gray-500 hover:text-gray-900">Benefits</li>
-                <li className="text-gray-500 hover:text-gray-900">classes</li>
-                <li className="text-gray-500 hover:text-gray-900">Contact</li>
-              </ul>
-              </div>
-            {/* Inner most right side */}
-            <div className={`${flexBetween} gap-8 w-full`}>
-              {/* a-signup button-become a member */}
-              <a href="#" className="text-gray-500 hover:text-gray-900">
-                Signup
-              </a>
-            <div className={`${flexBetween} gap-8`}>
+          {/* Inner most left side */}
+           <div className={`${flexBetween} gap-6 w-5/6`}>
+             {/* ul Link home,  benefits, Our classes ,contact us */}
+             <ul className="flex  items-center mx-auto w-full justify-center gap-x-10">
+               <Link page='Home'  selectedPage={selectedPage} setSelectedPage={setSelectedPage}/>
+               <Link page='Benefits' selectedPage={selectedPage} setSelectedPage={setSelectedPage}/>
+               <Link  page="classes" selectedPage={selectedPage} setSelectedPage={setSelectedPage}/>
+               <Link  page='Contact' selectedPage={selectedPage} setSelectedPage={setSelectedPage} />
+             </ul>
+             </div>
+           {/* Inner most right side */}
+           <div className={`${flexBetween} gap-8 w-full`}>
+             {/* a-signup button-become a member */}
+             <a href="#"  className="text-gray-500 hover:text-gray-900">
+               Signup
+             </a>
+           <div className={`${flexBetween} gap-8`}>
 
-            <button className="bg-gray-900 text-white  rounded-md  text-sm px-6 py-2">
-                 Member
-              </button>
-            </div>
-              </div>
-          
-              </div>
+           <ActionButton setSelectedPage={setSelectedPage} >
+                Member
+             </ActionButton>
+           </div>
+             </div>
+         
+             </div>
              
+            
+          ):(
+           <button className=' bg-secondary-500 rounded-full p-2'
+           onClick={(()=>{setIsMenuToggle(!isMenuToggle)})}
+           
+           >
+            <Bars3Icon className="h-6 w-6 text-white" />
+           </button>
+          )}
         </div>
       </div>
     </nav>
